@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mystery Quest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Special+Elite&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=9" />
+</head>
+<body>
+
+<button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">Light Mode</button>
+
+<!-- User display chip (shown when logged in) -->
+<div id="user-display" class="user-display hidden">
+  <span id="user-name-display"></span>
+  <button onclick="doLogout()">Sign Out</button>
+</div>
+
+<!-- ===================== AUTH PAGE ===================== -->
+<div id="page-auth" class="page active">
+  <div class="auth-page">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="hero-badge" style="margin-bottom:0.4rem">EST. 1888</div>
+        <h1 class="auth-title">Mystery Quest</h1>
+        <p class="auth-sub">Solve crimes. Escape rooms. Unravel the unknown.</p>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="auth-tab-login" onclick="showAuthTab('login')">Sign In</button>
+        <button class="auth-tab" id="auth-tab-register" onclick="showAuthTab('register')">Create Account</button>
+      </div>
+
+      <!-- Login panel -->
+      <div id="auth-panel-login">
+        <div class="auth-field">
+          <label>Username</label>
+          <input id="auth-login-user" type="text" placeholder="Enter your username" autocomplete="username" />
+        </div>
+        <div class="auth-field">
+          <label>Password</label>
+          <input id="auth-login-pass" type="password" placeholder="Enter your password" autocomplete="current-password" />
+        </div>
+        <button class="btn-play auth-submit" onclick="doLogin()">Sign In</button>
+        <p id="auth-login-msg" class="auth-msg"></p>
+        <button class="auth-guest" onclick="playAsGuest()">Continue as Guest</button>
+      </div>
+
+      <!-- Register panel -->
+      <div id="auth-panel-register" class="hidden">
+        <div class="auth-field">
+          <label>Username</label>
+          <input id="auth-reg-user" type="text" placeholder="Choose a username" autocomplete="username" />
+        </div>
+        <div class="auth-field">
+          <label>Password</label>
+          <input id="auth-reg-pass" type="password" placeholder="Choose a password (min 4 chars)" autocomplete="new-password" />
+        </div>
+        <div class="auth-field">
+          <label>Confirm Password</label>
+          <input id="auth-reg-pass2" type="password" placeholder="Confirm your password" autocomplete="new-password" />
+        </div>
+        <button class="btn-play auth-submit" onclick="doRegister()">Create Account</button>
+        <p id="auth-reg-msg" class="auth-msg"></p>
+        <button class="auth-guest" onclick="playAsGuest()">Continue as Guest</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== LANDING PAGE ===================== -->
+<div id="page-home" class="page">
+  <div class="hero">
+    <div class="hero-overlay"></div>
+    <img class="hero-bg" src="assets/hero-bg.jpg" alt=""
+         onerror="this.onerror=null;this.src='assets/hero-bg.svg'" />
+    <div class="hero-content">
+      <div class="hero-badge">EST. 1888</div>
+      <h1 class="hero-title">Mystery Quest</h1>
+      <p class="hero-sub">Solve crimes. Escape rooms. Unravel the unknown.</p>
+      <div class="scroll-hint">&#9662; Choose your challenge</div>
+    </div>
+  </div>
+
+  <section class="mode-cards">
+    <div class="mode-card" data-mode="escape">
+      <div class="card-img-wrap">
+        <div class="card-img-placeholder escape-placeholder"></div>
+        <img src="assets/card-escape.jpg" alt="Escape Room"
+             onerror="this.onerror=null;this.src='assets/card-escape.svg'" />
+        <div class="card-icon">ESCAPE</div>
+      </div>
+      <div class="card-body">
+        <h2>Escape Room</h2>
+        <p>Locked inside a mystery. Search every corner, solve every puzzle, find your way out before dawn.</p>
+        <div class="card-meta"><span>3 Rooms</span><span>15&ndash;20 min</span><span>3 Themes</span></div>
+        <button class="btn-play">Choose a Scenario</button>
+      </div>
+    </div>
+
+    <div class="mode-card" data-mode="brainteaser">
+      <div class="card-img-wrap">
+        <div class="card-img-placeholder brain-placeholder"></div>
+        <img src="assets/card-brain.jpg" alt="Brain Teasers"
+             onerror="this.onerror=null;this.src='assets/card-brain.svg'" />
+        <div class="card-icon">RIDDLES</div>
+      </div>
+      <div class="card-body">
+        <h2>Brain Teasers</h2>
+        <p>Riddles forged in shadow, logic traps, and cryptic ciphers. Ten questions. One true detective mind.</p>
+        <div class="card-meta"><span>10 Puzzles</span><span>10&ndash;15 min</span><span>90+ Questions</span></div>
+        <button class="btn-play">Test Your Mind</button>
+      </div>
+    </div>
+
+    <div class="mode-card" data-mode="detective">
+      <div class="card-img-wrap">
+        <div class="card-img-placeholder detective-placeholder"></div>
+        <img src="assets/card-detective.jpg" alt="Detective Simulator"
+             onerror="this.onerror=null;this.src='assets/card-detective.svg'" />
+        <div class="card-icon">DETECT</div>
+      </div>
+      <div class="card-body">
+        <h2>Detective Simulator</h2>
+        <p>A body found. Three suspects. One killer. Gather clues, interrogate witnesses, make your accusation.</p>
+        <div class="card-meta"><span>Full Cases</span><span>20&ndash;30 min</span><span>3 Cases</span></div>
+        <button class="btn-play">Open the Case File</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <p>Mystery Quest &copy; 2026 &mdash; Can you handle the truth?</p>
+  </footer>
+</div>
+
+<!-- ===================== ESCAPE THEME SELECTOR ===================== -->
+<div id="page-escape-select" class="page">
+  <div class="selector-page">
+    <div class="selector-header">
+      <h1>Choose Your Escape</h1>
+      <p>Three scenarios. Three ways to be trapped. Which will you attempt?</p>
+    </div>
+    <div class="selector-grid" id="escape-selector-grid">
+      <!-- populated by JS -->
+    </div>
+    <button class="btn-back-sel" onclick="goHome()">Back to Menu</button>
+  </div>
+</div>
+
+<!-- ===================== ESCAPE ROOM ===================== -->
+<div id="page-escape" class="page">
+  <div class="game-header">
+    <button class="btn-back" onclick="goEscapeSelect()">Back</button>
+    <h2 class="game-title" id="er-page-title">Ashwood Mansion</h2>
+    <div class="er-hud">
+      <span id="er-room-name">Foyer</span>
+      <span id="er-inventory-count">0 items</span>
+      <span id="er-hint-counter">Hints: 3</span>
+    </div>
+  </div>
+
+  <div class="big-quiz-progress"><div id="er-progress-fill" class="big-quiz-progress-fill"></div></div>
+
+  <!-- Escape Room Intro / Briefing -->
+  <div id="er-intro" class="det-intro">
+    <div class="det-briefing">
+      <div class="det-badge" id="er-intro-badge">ESCAPE ROOM</div>
+      <h2 id="er-intro-title"></h2>
+      <div class="narrative-banner" id="er-intro-narrative"></div>
+      <div class="det-brief-text" id="er-intro-facts"></div>
+      <button id="er-resume-btn" class="btn-play btn-resume hidden" onclick="resumeEscapeGame()">Resume</button>
+      <button class="btn-play" onclick="startEscapeGame()">Enter Fresh</button>
+    </div>
+  </div>
+
+  <!-- Escape Room Game -->
+  <div id="er-game" class="hidden">
+  <div class="er-layout">
+    <div class="er-scene-wrap">
+      <div id="er-room-img" class="er-room-img"></div>
+      <div id="er-hotspots" class="er-hotspots"></div>
+      <div id="er-message" class="er-message hidden"></div>
+    </div>
+
+    <aside class="er-sidebar">
+      <div class="er-panel">
+        <h3>Location</h3>
+        <p id="er-location-desc"></p>
+      </div>
+      <div class="er-panel">
+        <h3>Inventory</h3>
+        <div id="er-inventory"></div>
+      </div>
+      <div class="er-panel">
+        <h3>Notes</h3>
+        <div id="er-notes"></div>
+      </div>
+      <div class="er-panel">
+        <h3>Move To</h3>
+        <div id="er-exits"></div>
+      </div>
+    </aside>
+  </div>
+
+  </div><!-- end er-game -->
+
+  <div id="er-puzzle-modal" class="modal hidden">
+    <div class="modal-box">
+      <h3 id="er-puzzle-title"></h3>
+      <p id="er-puzzle-desc"></p>
+      <div id="er-hint-box" class="hint-box hidden"></div>
+      <input id="er-puzzle-input" type="text" placeholder="Enter answer..." autocomplete="off" />
+      <div class="modal-btns">
+        <button onclick="checkEscapeAnswer()">Submit</button>
+        <button class="hint-btn" onclick="showEscapeHint()">Use Hint</button>
+        <button class="btn-secondary" onclick="closeEscapeModal()">Cancel</button>
+      </div>
+      <p id="er-puzzle-feedback" class="feedback-msg"></p>
+    </div>
+  </div>
+
+  <div id="er-win-modal" class="modal hidden">
+    <div class="modal-box win-box">
+      <div class="win-icon">&#10003;</div>
+      <h2>You Escaped!</h2>
+      <p id="er-win-msg">You solved all the puzzles and found your way out. Well played.</p>
+      <button onclick="goHome()">Back to Menu</button>
+      <button class="btn-secondary" onclick="restartEscape()">Play Again</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== BRAIN TEASERS ===================== -->
+<div id="page-brainteaser" class="page">
+  <div class="game-header">
+    <button class="btn-back" onclick="goHome()">Back</button>
+    <h2 class="game-title">Brain Teasers</h2>
+    <div class="bt-hud">
+      <span id="bt-score-display">Score: 0</span>
+      <span id="bt-q-display">Q 1/10</span>
+      <span id="bt-timer-display">0:00</span>
+      <span id="bt-smartness-display" class="bt-smartness-hud">★ 0</span>
+    </div>
+  </div>
+
+  <div id="bt-intro" class="bt-intro">
+    <div class="bt-intro-card">
+      <div class="bt-intro-icon">&#9670;</div>
+      <h2>Test Your Detective Mind</h2>
+      <p>10 questions drawn from a pool of 90+ across riddles, logic, ciphers, and lateral thinking. Once you submit, there is no going back. Good luck.</p>
+      <div class="bt-categories">
+        <span>Classic Riddles</span>
+        <span>Logic</span>
+        <span>Ciphers</span>
+        <span>Lateral Thinking</span>
+        <span>Mystery &amp; Crime</span>
+      </div>
+      <button id="bt-resume-btn" class="btn-play btn-resume hidden" onclick="resumeBrainTeaser()">Resume</button>
+      <button class="btn-play" onclick="startBrainTeaser()">Begin Fresh</button>
+    </div>
+  </div>
+
+  <div id="bt-question-wrap" class="hidden">
+    <div class="bt-progress-bar"><div id="bt-progress" class="bt-progress-fill"></div></div>
+    <div class="bt-question-card">
+      <div class="bt-q-category" id="bt-category"></div>
+      <p class="bt-q-text" id="bt-question-text"></p>
+      <div class="bt-options" id="bt-options"></div>
+      <div id="bt-explain" class="bt-explain hidden"></div>
+      <button id="bt-next-btn" class="btn-play hidden" onclick="nextBrainTeaser()">Next</button>
+    </div>
+  </div>
+
+  <div id="bt-results" class="hidden">
+    <div class="bt-result-card">
+      <div class="result-icon" id="bt-result-icon">&#9670;</div>
+      <h2>Case Closed</h2>
+      <p id="bt-result-msg"></p>
+      <div class="result-score-big" id="bt-result-score"></div>
+      <div id="bt-smartness-result" class="bt-smartness-result hidden"></div>
+      <div id="bt-result-breakdown"></div>
+      <div class="result-btns">
+        <button class="btn-play" onclick="restartBrainTeaser()">Try Again</button>
+        <button class="btn-secondary" onclick="goHome()">Menu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== DETECTIVE CASE SELECTOR ===================== -->
+<div id="page-detective-select" class="page">
+  <div class="selector-page">
+    <div class="selector-header">
+      <h1>Choose Your Case</h1>
+      <p>Six unsolved murders. Six killers still free. Which file will you open?</p>
+    </div>
+    <div class="selector-grid" id="detective-selector-grid">
+      <!-- populated by JS -->
+    </div>
+    <button class="btn-back-sel" onclick="goHome()">Back to Menu</button>
+  </div>
+</div>
+
+<!-- ===================== DETECTIVE SIMULATOR ===================== -->
+<div id="page-detective" class="page">
+  <div class="game-header">
+    <button class="btn-back" onclick="goDetectiveSelect()">Back</button>
+    <h2 class="game-title" id="det-page-title">The Thornfield Case</h2>
+    <div class="det-hud">
+      <span id="det-clues-found">Clues: 0/7</span>
+      <span id="det-phase-display">Crime Scene</span>
+    </div>
+  </div>
+
+  <div class="big-quiz-progress"><div id="det-progress-fill" class="big-quiz-progress-fill"></div></div>
+
+  <!-- Intro / Briefing -->
+  <div id="det-intro" class="det-intro">
+    <div class="det-briefing">
+      <div class="det-badge" id="det-case-stamp">CASE FILE #4471</div>
+      <h2 id="det-case-title">Death at Thornfield Estate</h2>
+      <div class="det-scene-img">
+        <img id="det-scene-img-el" src="assets/crime-scene-overview.svg" alt="Crime Scene"
+             onerror="this.onerror=null;" />
+        <div class="crime-placeholder"></div>
+      </div>
+      <div class="narrative-banner" id="det-intro-narrative"></div>
+      <div class="det-brief-text" id="det-brief-facts"></div>
+      <button id="det-resume-btn" class="btn-play btn-resume hidden" onclick="resumeDetective()">Resume Investigation</button>
+      <button class="btn-play" onclick="startDetective()">Begin Fresh</button>
+    </div>
+  </div>
+
+  <!-- Main Investigation UI -->
+  <div id="det-main" class="hidden">
+    <div class="det-tabs">
+      <button class="det-tab active" data-tab="scene" onclick="switchDetTab(this,'scene')">Crime Scene</button>
+      <button class="det-tab" data-tab="suspects" onclick="switchDetTab(this,'suspects')">Suspects</button>
+      <button class="det-tab" data-tab="evidence" onclick="switchDetTab(this,'evidence')">Evidence Board</button>
+      <button class="det-tab" data-tab="accuse" onclick="switchDetTab(this,'accuse')">Accusation</button>
+    </div>
+
+    <!-- Crime Scene Tab -->
+    <div id="det-tab-scene" class="det-tab-panel active">
+      <div class="narrative-banner" id="det-scene-narrative"></div>
+      <div class="det-area-nav" id="det-area-nav"></div>
+      <div class="det-scene-layout">
+        <div class="det-room-view">
+          <div class="det-room-header" id="det-room-header">Crime Scene</div>
+          <div class="det-scene-interactive" id="det-scene-interactive" onclick="handleSceneClick(event)">
+            <div class="det-scene-bg" id="det-scene-bg"></div>
+            <div id="det-scene-hotspots" class="det-scene-hotspots"></div>
+            <div id="det-scene-msg" class="det-scene-msg hidden"></div>
+          </div>
+        </div>
+        <div class="det-clue-detail" id="det-clue-detail">
+          <p class="placeholder-text">Click on the scene to find evidence.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Suspects Tab -->
+    <div id="det-tab-suspects" class="det-tab-panel hidden">
+      <div class="narrative-banner" id="det-suspects-narrative"></div>
+      <div class="suspects-grid" id="suspects-grid"></div>
+      <div id="det-interview-panel" class="det-interview-panel hidden">
+        <div class="interview-header" id="interview-header"></div>
+        <div class="interview-questions" id="interview-questions"></div>
+        <button class="btn-secondary" onclick="closeInterview()">Back to Suspects</button>
+      </div>
+    </div>
+
+    <!-- Evidence Board Tab -->
+    <div id="det-tab-evidence" class="det-tab-panel hidden">
+      <div class="evidence-board" id="evidence-board">
+        <div class="evidence-board-title">Evidence Board</div>
+        <div id="evidence-items" class="evidence-items"></div>
+        <div class="evidence-empty" id="evidence-empty">No evidence collected yet. Examine the crime scene.</div>
+      </div>
+    </div>
+
+    <!-- Accusation Tab -->
+    <div id="det-tab-accuse" class="det-tab-panel hidden">
+      <div class="accusation-panel">
+        <h2>Make Your Accusation</h2>
+        <p>You have one chance. Choose wisely &mdash; a wrong accusation lets the killer go free.</p>
+        <div id="accuse-warning" class="accuse-warning hidden">
+          You should gather more evidence first. Found: <span id="accuse-clue-count">0</span>/7 clues.
+        </div>
+        <div class="accuse-suspect-list" id="accuse-suspect-list"></div>
+        <button id="btn-accuse" class="btn-play btn-accuse" onclick="makeAccusation()" disabled>Accuse This Suspect</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clue Modal -->
+  <div id="det-clue-modal" class="modal hidden">
+    <div class="modal-box">
+      <h3 id="det-clue-title"></h3>
+      <div id="det-clue-img-wrap" class="clue-img-wrap"></div>
+      <p id="det-clue-text"></p>
+      <p id="det-clue-finding" class="clue-finding"></p>
+      <button onclick="collectClue()">Add to Evidence Board</button>
+      <button class="btn-secondary" onclick="closeClueModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- Result Modal -->
+  <div id="det-result-modal" class="modal hidden">
+    <div class="modal-box">
+      <div id="det-result-icon" class="win-icon"></div>
+      <h2 id="det-result-title"></h2>
+      <p id="det-result-text"></p>
+      <div id="det-result-reveal" class="result-reveal"></div>
+      <button class="btn-play" onclick="goHome()">Back to Menu</button>
+      <button class="btn-secondary" onclick="restartDetective()">New Investigation</button>
+    </div>
+  </div>
+</div>
+
+<script src="game.js?v=10"></script>
+</body>
+</html>
